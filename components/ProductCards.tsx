@@ -43,7 +43,7 @@ export function ProductCards({ onAddToCart }: ProductCardsProps) {
 
   return (
     <div className="max-w-7xl mx-auto px-4">
-      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 lg:gap-8">
+      <div className="flex flex-col gap-6 lg:gap-8">
         {products.map((product) => {
           const productId = product.id;
           const selectedSize = selectedSizes[productId] || (product.sizes ? product.sizes[0].size : undefined);
@@ -83,77 +83,76 @@ export function ProductCards({ onAddToCart }: ProductCardsProps) {
            return (
              <div
                key={product.id}
-               className="bg-cream/5 backdrop-blur-sm rounded-[2.5rem] border border-gold/20 shadow-lg hover:shadow-xl transition-all duration-300 flex flex-col overflow-hidden"
+               className="bg-cream/5 backdrop-blur-sm rounded-[2.5rem] border border-gold/20 shadow-lg hover:shadow-xl transition-all duration-300 flex flex-col lg:flex-row overflow-hidden"
              >
-               {/* Imagen del producto - Altura fija */}
-               <div className="relative w-full h-72 rounded-t-[2.5rem] overflow-hidden bg-cream/5 border-b border-gold/10">
-                {hasImage && productImages.length > 0 ? (
-                  <>
-                    <div className="relative w-full h-full flex items-center justify-center p-4">
-                      <Image
-                        src={productImages[currentIndex]}
-                        alt={`${product.name} - Imagen ${currentIndex + 1}`}
-                        fill
-                        className="object-contain"
-                        priority={product.id === 'tres-leches' && currentIndex === 0}
-                      />
-                      
-                       {/* Botones de navegación */}
-                       {productImages.length > 1 && (
-                         <>
-                           <button
-                             onClick={prevImage}
-                             className="absolute left-3 top-1/2 -translate-y-1/2 bg-cream/10 backdrop-blur-sm hover:bg-cream/20 border border-gold/30 text-cream rounded-full p-2.5 shadow-lg transition-all hover:scale-110 z-10"
-                             aria-label="Imagen anterior"
-                           >
-                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                             </svg>
-                           </button>
-                           <button
-                             onClick={nextImage}
-                             className="absolute right-3 top-1/2 -translate-y-1/2 bg-cream/10 backdrop-blur-sm hover:bg-cream/20 border border-gold/30 text-cream rounded-full p-2.5 shadow-lg transition-all hover:scale-110 z-10"
-                             aria-label="Siguiente imagen"
-                           >
-                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                             </svg>
-                           </button>
-                         </>
-                       )}
-                     </div>
-                     
-                     {/* Indicadores de puntos */}
-                     {productImages.length > 1 && (
-                       <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
-                         {productImages.map((_, index) => (
-                           <button
-                             key={index}
-                             onClick={() => setCurrentImageIndex({ ...currentImageIndex, [product.id]: index })}
-                             className={`h-2 rounded-full transition-all ${
-                               index === currentIndex
-                                 ? 'w-8 bg-gold'
-                                 : 'w-2 bg-gold/30 hover:bg-gold/50'
-                             }`}
-                             aria-label={`Ir a imagen ${index + 1}`}
-                           />
-                         ))}
+               {/* Columna Izquierda - Imagen, Nombre, Descripción (Mobile: arriba, Desktop: izquierda) */}
+               <div className="lg:w-1/2 flex flex-col order-1 lg:order-1">
+                 {/* Imagen del producto */}
+                 <div className="relative w-full h-72 lg:h-full lg:min-h-[400px] rounded-t-[2.5rem] lg:rounded-l-[2.5rem] lg:rounded-tr-none overflow-hidden bg-cream/5 border-b lg:border-b-0 lg:border-r border-gold/10">
+                   {hasImage && productImages.length > 0 ? (
+                     <>
+                       <div className="relative w-full h-full flex items-center justify-center p-4">
+                         <Image
+                           src={productImages[currentIndex]}
+                           alt={`${product.name} - Imagen ${currentIndex + 1}`}
+                           fill
+                           className="object-contain"
+                           priority={product.id === 'tres-leches' && currentIndex === 0}
+                         />
+                         
+                         {/* Botones de navegación */}
+                         {productImages.length > 1 && (
+                           <>
+                             <button
+                               onClick={prevImage}
+                               className="absolute left-3 top-1/2 -translate-y-1/2 bg-cream/10 backdrop-blur-sm hover:bg-cream/20 border border-gold/30 text-cream rounded-full p-2.5 shadow-lg transition-all hover:scale-110 z-10"
+                               aria-label="Imagen anterior"
+                             >
+                               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                               </svg>
+                             </button>
+                             <button
+                               onClick={nextImage}
+                               className="absolute right-3 top-1/2 -translate-y-1/2 bg-cream/10 backdrop-blur-sm hover:bg-cream/20 border border-gold/30 text-cream rounded-full p-2.5 shadow-lg transition-all hover:scale-110 z-10"
+                               aria-label="Siguiente imagen"
+                             >
+                               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                               </svg>
+                             </button>
+                           </>
+                         )}
                        </div>
-                     )}
-                  </>
-                 ) : (
-                   // Placeholder para productos sin imagen
-                   <div className="absolute inset-0 flex items-center justify-center">
-                     <div className="text-8xl opacity-20 text-cream/30">🧁</div>
-                   </div>
-                 )}
-               </div>
- 
-               {/* Contenido de la card - Flex-grow para ocupar espacio restante */}
-               <div className="p-6 lg:p-8 flex flex-col flex-grow space-y-5">
+                       
+                       {/* Indicadores de puntos */}
+                       {productImages.length > 1 && (
+                         <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+                           {productImages.map((_, index) => (
+                             <button
+                               key={index}
+                               onClick={() => setCurrentImageIndex({ ...currentImageIndex, [product.id]: index })}
+                               className={`h-2 rounded-full transition-all ${
+                                 index === currentIndex
+                                   ? 'w-8 bg-gold'
+                                   : 'w-2 bg-gold/30 hover:bg-gold/50'
+                               }`}
+                               aria-label={`Ir a imagen ${index + 1}`}
+                             />
+                           ))}
+                         </div>
+                       )}
+                     </>
+                   ) : (
+                     // Placeholder para productos sin imagen
+                     <div className="absolute inset-0 flex items-center justify-center">
+                       <div className="text-8xl opacity-20 text-cream/30">🧁</div>
+                     </div>
+                   )}
+                 </div>
                  
-                 {/* Título y Descripción */}
-                 <div>
+                 {/* Título y Descripción - Dentro de la columna izquierda */}
+                 <div className="p-6 lg:p-8 flex flex-col flex-grow">
                    <h3 className="font-display text-2xl md:text-3xl text-cream mb-3 font-bold">
                      {product.name}
                    </h3>
@@ -161,6 +160,10 @@ export function ProductCards({ onAddToCart }: ProductCardsProps) {
                      {product.description}
                    </p>
                  </div>
+               </div>
+
+               {/* Columna Derecha - Atributos, Cantidad, Notas, Precio, Botón (Mobile: abajo, Desktop: derecha) */}
+               <div className="lg:w-1/2 p-6 lg:p-8 flex flex-col flex-grow space-y-5 order-2 lg:order-2">
  
                  {/* Selector de Tamaño */}
                  {product.sizes && (
@@ -185,7 +188,7 @@ export function ProductCards({ onAddToCart }: ProductCardsProps) {
                      </div>
                    </div>
                  )}
- 
+
                  {/* Selector de Cantidad */}
                  <div>
                    <label className="block text-sm font-medium text-cream mb-3">
@@ -225,10 +228,10 @@ export function ProductCards({ onAddToCart }: ProductCardsProps) {
                      className="w-full px-4 py-2 bg-cream/10 border border-gold/30 rounded-[2rem] focus:outline-none focus:ring-2 focus:ring-gold focus:border-gold text-cream placeholder-cream/50 text-sm"
                    />
                  </div>
- 
+
                  {/* Spacer para empujar precio y botón al fondo */}
                  <div className="flex-grow"></div>
- 
+
                  {/* Precio y Botón - Siempre al fondo */}
                  <div className="space-y-4 pt-4 border-t border-gold/20">
                    <div className="flex items-center justify-between">
@@ -237,7 +240,7 @@ export function ProductCards({ onAddToCart }: ProductCardsProps) {
                        {formatPrice(price)}
                      </span>
                    </div>
- 
+
                    <button
                      onClick={() => handleAddProduct(product)}
                      className="w-full bg-gold hover:bg-gold-deep text-chocolate py-4 rounded-full font-bold text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"

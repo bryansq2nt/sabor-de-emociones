@@ -188,34 +188,21 @@ export default function HomePage() {
                   </p>
                 </div>
                 
-                <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-                  <div className="lg:col-span-3">
-                    <ProductCards onAddToCart={handleAddToCart} />
-                  </div>
-                  <div className="lg:col-span-1">
-                    <div className="hidden lg:block">
+                <div className="flex flex-col gap-8">
+                  <ProductCards onAddToCart={handleAddToCart} />
+                  
+                  {/* Order Summary - Desktop and Mobile */}
+                  {cartItems.length > 0 && (
+                    <div className="mt-8">
                       <OrderSummary
                         items={cartItems}
                         total={total}
                         onRemove={handleRemoveFromCart}
                         onUpdateQuantity={handleUpdateQuantity}
-                        isSticky={true}
                       />
                     </div>
-                  </div>
+                  )}
                 </div>
-
-                {/* Mobile Order Summary */}
-                {cartItems.length > 0 && (
-                  <div className="lg:hidden mt-8">
-                    <OrderSummary
-                      items={cartItems}
-                      total={total}
-                      onRemove={handleRemoveFromCart}
-                      onUpdateQuantity={handleUpdateQuantity}
-                    />
-                  </div>
-                )}
 
                 {/* CTA Button - Ordenar en línea */}
                 {total > 0 && (
