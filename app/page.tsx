@@ -11,7 +11,6 @@ import { OrderItem, Order } from '@/lib/order';
 import { content } from '@/lib/content';
 
 const WHATSAPP_NUMBER = '15719103088';
-const PHONE_NUMBER = '+15719103088';
 const INSTAGRAM_URL = 'https://www.instagram.com/ivis__bakery/'; // Actualizar con la URL real de Instagram
 
 export default function HomePage() {
@@ -71,7 +70,16 @@ export default function HomePage() {
       });
 
       if (!response.ok) {
-        throw new Error('Error al enviar el pedido');
+        if (response.status === 429) {
+          throw new Error('Demasiadas solicitudes. Por favor, espera unos minutos e intenta nuevamente.');
+        } else if (response.status === 403) {
+          throw new Error('Solicitud no autorizada. Por favor, intenta nuevamente.');
+        } else if (response.status === 400) {
+          const errorData = await response.json().catch(() => ({}));
+          throw new Error(errorData.error || 'Datos inválidos. Por favor, verifica tu información.');
+        } else {
+          throw new Error('Error al enviar el pedido');
+        }
       }
 
       setSubmitStatus('success');

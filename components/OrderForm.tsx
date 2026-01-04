@@ -38,6 +38,7 @@ export function OrderForm({
     desiredDate: '',
     generalNotes: '',
   });
+  const [formStartedAt] = useState(Date.now()); // Timestamp cuando se renderiza el form
 
   // Actualizar formData cuando savedCustomerInfo cambie o cuando se resetea el estado
   useEffect(() => {
@@ -74,13 +75,24 @@ export function OrderForm({
       return;
     }
 
-    const order: Order = {
+    // Get honeypot value from form
+    const form = e.currentTarget as HTMLFormElement;
+    const formDataObj = new FormData(form);
+    const companyValue = formDataObj.get('company') as string || '';
+    const formStartedAtValue = formDataObj.get('formStartedAt') 
+      ? parseInt(formDataObj.get('formStartedAt') as string, 10) 
+      : formStartedAt;
+
+    const order: Order & { company?: string; formStartedAt?: number } = {
       ...formData,
       items,
       total,
+      // Anti-spam fields
+      company: companyValue,
+      formStartedAt: formStartedAtValue,
     };
 
-    await onSubmitEmail(order);
+    await onSubmitEmail(order as Order);
   };
 
   const handleWhatsAppSubmit = () => {
@@ -297,6 +309,31 @@ export function OrderForm({
           rows={3}
         />
       </div>
+
+      {/* Anti-spam hidden fields - Honeypot */}
+      <input
+        type="text"
+        name="company"
+        tabIndex={-1}
+        autoComplete="off"
+        defaultValue=""
+        style={{ 
+          position: 'absolute', 
+          left: '-9999px', 
+          width: '1px', 
+          height: '1px', 
+          opacity: 0, 
+          pointerEvents: 'none',
+          visibility: 'hidden'
+        }}
+        aria-hidden="true"
+      />
+      {/* Timestamp del inicio del formulario */}
+      <input
+        type="hidden"
+        name="formStartedAt"
+        value={formStartedAt}
+      />
 
       <div className="pt-6 border-t border-gold/30">
         <div className="flex flex-col gap-4">

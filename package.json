@@ -12,7 +12,8 @@
     "next": "^14.0.4",
     "nodemailer": "^7.0.12",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "zod": "^4.3.4"
   },
   "devDependencies": {
     "@types/node": "^20.10.6",
