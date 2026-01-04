@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, RefObject } from 'react';
+import React, { useState, RefObject, useEffect } from 'react';
 import { OrderItem, Order } from '@/lib/order';
 import { getWhatsAppUrl } from '@/lib/whatsapp';
 
@@ -13,6 +13,8 @@ interface OrderFormProps {
   errorMessage: string;
   firstInputRef?: RefObject<HTMLInputElement>;
   onBack?: () => void;
+  onNewOrder?: () => void;
+  savedCustomerInfo?: {name: string; phone: string; email: string} | null;
 }
 
 export function OrderForm({
@@ -24,16 +26,38 @@ export function OrderForm({
   errorMessage,
   firstInputRef,
   onBack,
+  onNewOrder,
+  savedCustomerInfo,
 }: OrderFormProps) {
   const [formData, setFormData] = useState({
-    name: '',
-    phone: '',
-    email: '',
+    name: savedCustomerInfo?.name || '',
+    phone: savedCustomerInfo?.phone || '',
+    email: savedCustomerInfo?.email || '',
     pickupOrDelivery: 'pickup' as 'pickup' | 'delivery',
     address: '',
     desiredDate: '',
     generalNotes: '',
   });
+
+  // Actualizar formData cuando savedCustomerInfo cambie o cuando se resetea el estado
+  useEffect(() => {
+    if (savedCustomerInfo && submitStatus !== 'success') {
+      setFormData(prev => ({
+        ...prev,
+        name: savedCustomerInfo.name,
+        phone: savedCustomerInfo.phone,
+        email: savedCustomerInfo.email,
+      }));
+    } else if (!savedCustomerInfo && submitStatus === 'idle') {
+      // Limpiar solo los campos que no son de información del cliente
+      setFormData(prev => ({
+        ...prev,
+        address: '',
+        desiredDate: '',
+        generalNotes: '',
+      }));
+    }
+  }, [savedCustomerInfo, submitStatus]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -73,6 +97,42 @@ export function OrderForm({
     window.open(getWhatsAppUrl(order), '_blank');
   };
 
+  // Mostrar mensaje de confirmación cuando el pedido se envió exitosamente
+  if (submitStatus === 'success') {
+    return (
+      <div className="space-y-6 text-center">
+        <div className="mb-8">
+          <div className="mb-6 flex justify-center">
+            <div className="w-20 h-20 rounded-full bg-green-500/20 flex items-center justify-center border-2 border-green-400/50">
+              <svg className="w-12 h-12 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+          </div>
+          <h3 className="font-display text-3xl md:text-4xl text-cream mb-4">
+            ¡Pedido Realizado!
+          </h3>
+          <p className="text-cream/90 text-lg mb-2">
+            Tu pedido ha sido recibido correctamente.
+          </p>
+          <p className="text-cream/80 text-base mb-4">
+            Te notificaremos pronto sobre el estado de tu orden y las opciones de pago disponibles.
+          </p>
+        </div>
+
+        {onNewOrder && (
+          <button
+            type="button"
+            onClick={onNewOrder}
+            className="w-full bg-gold text-chocolate py-5 rounded-full font-bold text-lg transition-all duration-300 hover:scale-105 shadow-xl hover:shadow-[0_0_25px_rgba(218,165,32,0.9)]"
+          >
+            Hacer otro pedido
+          </button>
+        )}
+      </div>
+    );
+  }
+
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       {onBack && (
@@ -86,13 +146,6 @@ export function OrderForm({
           </svg>
           Editar pedido
         </button>
-      )}
-
-      {submitStatus === 'success' && (
-        <div className="p-4 bg-green-900/40 border-2 border-green-400/30 rounded-[2.5rem] text-green-200 text-center backdrop-blur-sm">
-          <p className="font-semibold">¡Pedido enviado correctamente! ✅</p>
-          <p className="text-sm mt-1">Te contactaremos pronto para confirmar tu pedido.</p>
-        </div>
       )}
 
       {submitStatus === 'error' && (

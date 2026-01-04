@@ -29,7 +29,10 @@ export const products: Product[] = [
     id: 'flan',
     name: 'Flan',
     description: 'Clásico y suave, con caramelo casero. Un postre que siempre reconforta.',
-    fixedPrice: 25,
+    sizes: [
+      { size: 'mediano', price: 25 },
+      { size: 'grande', price: 35 }
+    ],
   },
 ];
 

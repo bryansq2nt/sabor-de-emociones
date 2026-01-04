@@ -21,6 +21,7 @@ export default function HomePage() {
   const [errorMessage, setErrorMessage] = useState('');
   const [showCheckout, setShowCheckout] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const [savedCustomerInfo, setSavedCustomerInfo] = useState<{name: string; phone: string; email: string} | null>(null);
   const flipContainerRef = useRef<HTMLDivElement>(null);
   const firstInputRef = useRef<HTMLInputElement>(null);
 
@@ -74,6 +75,12 @@ export default function HomePage() {
       }
 
       setSubmitStatus('success');
+      // Guardar información del cliente para futuros pedidos
+      setSavedCustomerInfo({
+        name: order.name,
+        phone: order.phone,
+        email: order.email || '',
+      });
       setCartItems([]);
     } catch (error) {
       setSubmitStatus('error');
@@ -93,6 +100,12 @@ export default function HomePage() {
 
   const handleBackClick = () => {
     setShowCheckout(false);
+  };
+
+  const handleNewOrder = () => {
+    setShowCheckout(false);
+    setSubmitStatus('idle');
+    setCartItems([]);
   };
 
   // Focus first input when entering checkout
@@ -252,6 +265,8 @@ export default function HomePage() {
                     errorMessage={errorMessage}
                     firstInputRef={firstInputRef}
                     onBack={handleBackClick}
+                    onNewOrder={handleNewOrder}
+                    savedCustomerInfo={savedCustomerInfo}
                   />
                 </div>
               </div>
