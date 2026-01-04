@@ -12,6 +12,7 @@ import { content } from '@/lib/content';
 
 const WHATSAPP_NUMBER = '15719103088';
 const PHONE_NUMBER = '+15719103088';
+const INSTAGRAM_URL = 'https://www.instagram.com/ivis__bakery/'; // Actualizar con la URL real de Instagram
 
 export default function HomePage() {
   const [cartItems, setCartItems] = useState<OrderItem[]>([]);
@@ -132,7 +133,7 @@ export default function HomePage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <a
               href="#productos"
-              className="bg-gold hover:bg-gold-deep text-chocolate px-8 py-4 rounded-full font-semibold text-lg transition-all hover:scale-105 shadow-lg"
+              className="bg-gold text-chocolate px-8 py-4 rounded-full font-semibold text-lg transition-all hover:scale-105 shadow-lg hover:shadow-[0_0_20px_rgba(218,165,32,0.8)]"
             >
               Ordenar ahora
             </a>
@@ -209,7 +210,7 @@ export default function HomePage() {
                   <div className="mt-12 text-center">
                     <button
                       onClick={handleCheckoutClick}
-                      className="bg-gold hover:bg-gold-deep text-chocolate px-12 py-5 rounded-full font-bold text-xl transition-all hover:scale-105 shadow-xl hover:shadow-2xl"
+                      className="bg-gold text-chocolate px-12 py-5 rounded-full font-bold text-xl transition-all hover:scale-105 shadow-xl hover:shadow-[0_0_25px_rgba(218,165,32,0.9)]"
                     >
                       Ordenar en línea
                     </button>
@@ -260,25 +261,97 @@ export default function HomePage() {
       </PastelSection>
 
       {/* CATERING */}
-      <PastelSection variant="both" bgColor="#44403c" className="py-16 md:py-24">
-        <div className="max-w-4xl mx-auto px-4 text-center">
-          <h2 className="font-display text-3xl md:text-4xl text-cream mb-6">
-            {content.catering.title}
+      <PastelSection variant="both" bgColor="#44403c" className="py-16 md:py-24 relative overflow-hidden">
+        {/* Textura sutil de fondo */}
+        <div 
+          className="absolute inset-0 opacity-[0.03]"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cg%3E%3Cpath d='M20 20 Q30 10 40 20 T60 20' stroke='%23F8D5A9' fill='none' stroke-width='0.5'/%3E%3Cpath d='M25 35 Q35 25 45 35 T65 35' stroke='%23F8D5A9' fill='none' stroke-width='0.5'/%3E%3Ccircle cx='15' cy='15' r='1' fill='%23F8D5A9'/%3E%3Ccircle cx='85' cy='25' r='1' fill='%23F8D5A9'/%3E%3Ccircle cx='50' cy='50' r='1' fill='%23F8D5A9'/%3E%3Cpath d='M70 15 L75 20 L70 25 L65 20 Z' fill='%23F8D5A9'/%3E%3Cpath d='M10 40 L15 45 L10 50 L5 45 Z' fill='%23F8D5A9'/%3E%3C/g%3E%3C/svg%3E")`,
+            backgroundRepeat: 'repeat',
+          }}
+        />
+        
+        <div className="max-w-4xl mx-auto px-4 text-center relative z-10">
+          {/* Encabezado */}
+          <h2 className="font-display text-4xl md:text-5xl text-cream mb-4">
+            Catering & Eventos
           </h2>
-          <p className="text-cream/80 text-lg mb-8 max-w-2xl mx-auto leading-relaxed">
-            {content.catering.text}
+          <p className="text-cream/80 text-lg md:text-xl mb-8 max-w-2xl mx-auto">
+            Postres que acompañan momentos importantes
           </p>
-          <p className="text-cream font-semibold mb-6">{content.catering.cta}</p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          
+          {/* Separador decorativo */}
+          <div className="flex items-center justify-center gap-4 mb-12">
+            <div className="h-px bg-gold/40 flex-1 max-w-[100px]"></div>
+            <svg className="w-5 h-5 text-gold/60" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+            </svg>
+            <div className="h-px bg-gold/40 flex-1 max-w-[100px]"></div>
+          </div>
+
+          {/* Contenido descriptivo */}
+          <p className="text-cream/90 text-lg mb-10 max-w-2xl mx-auto leading-relaxed">
+            Cada celebración merece postres que se recuerden. 
+            Llevamos el sabor artesanal de Sabor de Emociones a tus momentos especiales, 
+            creando experiencias dulces que complementan la alegría de cada ocasión.
+          </p>
+
+          {/* Ejemplos de eventos */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12 max-w-3xl mx-auto text-left">
+            <div className="bg-cream/5 backdrop-blur-sm rounded-[2rem] p-6 border border-gold/20">
+              <div className="flex items-center gap-3 mb-2">
+                <svg className="w-5 h-5 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />
+                </svg>
+                <h3 className="font-display text-xl text-cream font-semibold">Cumpleaños</h3>
+              </div>
+              <p className="text-cream/70 text-sm">Celebra con postres que endulzan cada momento especial</p>
+            </div>
+
+            <div className="bg-cream/5 backdrop-blur-sm rounded-[2rem] p-6 border border-gold/20">
+              <div className="flex items-center gap-3 mb-2">
+                <svg className="w-5 h-5 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
+                <h3 className="font-display text-xl text-cream font-semibold">Reuniones familiares</h3>
+              </div>
+              <p className="text-cream/70 text-sm">Postres que unen y crean recuerdos compartidos</p>
+            </div>
+
+            <div className="bg-cream/5 backdrop-blur-sm rounded-[2rem] p-6 border border-gold/20">
+              <div className="flex items-center gap-3 mb-2">
+                <svg className="w-5 h-5 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                <h3 className="font-display text-xl text-cream font-semibold">Eventos pequeños</h3>
+              </div>
+              <p className="text-cream/70 text-sm">Celebraciones íntimas con sabor artesanal</p>
+            </div>
+
+            <div className="bg-cream/5 backdrop-blur-sm rounded-[2rem] p-6 border border-gold/20">
+              <div className="flex items-center gap-3 mb-2">
+                <svg className="w-5 h-5 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                </svg>
+                <h3 className="font-display text-xl text-cream font-semibold">Celebraciones especiales</h3>
+              </div>
+              <p className="text-cream/70 text-sm">Momentos únicos que merecen postres únicos</p>
+            </div>
+          </div>
+
+          {/* Botón CTA */}
+          <div className="flex flex-col items-center gap-3">
             <a
               href={`https://wa.me/${WHATSAPP_NUMBER}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-[#25D366] hover:bg-[#20BA5A] text-white px-8 py-4 rounded-full font-semibold text-lg transition-all hover:scale-105 shadow-lg"
+              className="bg-gold text-chocolate px-8 py-4 rounded-full font-semibold text-lg transition-all hover:scale-105 shadow-lg hover:shadow-[0_0_20px_rgba(218,165,32,0.8)]"
             >
-              Cotizar ahora
+              Cotizar mi evento
             </a>
-            
+            <p className="text-cream/60 text-sm max-w-md">
+              Cada evento se cotiza según cantidad y tipo de celebración
+            </p>
           </div>
         </div>
       </PastelSection>
@@ -298,16 +371,16 @@ export default function HomePage() {
       </PastelSection>
 
       {/* FOOTER */}
-      <PastelSection variant="top" bgColor="#44403c" className="py-12">
+      <PastelSection variant="top" bgColor="#4F355F" className="py-12">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <p className="font-display text-2xl text-cream mb-2">{content.footer.brand}</p>
           <p className="text-cream/70 mb-6">{content.footer.location}</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-6">
             <a
-              href="https://g.page/r/YOUR_GOOGLE_PLACE_ID/review"
+              href="https://g.page/r/CR36H6la4rXrEBM/review"
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-gold hover:bg-gold-deep text-chocolate px-8 py-4 rounded-full font-semibold text-lg transition-all hover:scale-105 shadow-lg flex items-center justify-center gap-2"
+              className="bg-gold text-chocolate px-8 py-4 rounded-full font-semibold text-lg transition-all hover:scale-105 shadow-lg hover:shadow-[0_0_20px_rgba(218,165,32,0.8)] flex items-center justify-center gap-2"
             >
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
@@ -315,11 +388,22 @@ export default function HomePage() {
               Deja una Reseña
             </a>
             <a
-      href="#productos"
-      className="bg-gold hover:bg-gold-deep text-chocolate px-8 py-4 rounded-full font-semibold text-lg transition-all hover:scale-105 shadow-lg"
-    >
-      Ordenar ahora
-    </a>
+              href={INSTAGRAM_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-gold text-chocolate px-8 py-4 rounded-full font-semibold text-lg transition-all hover:scale-105 shadow-lg hover:shadow-[0_0_20px_rgba(218,165,32,0.8)] flex items-center justify-center gap-2"
+            >
+              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+              </svg>
+              Instagram
+            </a>
+            <a
+              href="#productos"
+              className="bg-gold text-chocolate px-8 py-4 rounded-full font-semibold text-lg transition-all hover:scale-105 shadow-lg hover:shadow-[0_0_20px_rgba(218,165,32,0.8)]"
+            >
+              Ordenar en línea
+            </a>
           </div>
           <p className="text-cream/60 text-sm">{content.footer.note}</p>
         </div>

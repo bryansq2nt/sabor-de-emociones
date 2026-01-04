@@ -192,8 +192,8 @@ export function ProductCards({ onAddToCart }: ProductCardsProps) {
                            onClick={() => setSelectedSizes({ ...selectedSizes, [productId]: sizeOption.size })}
                            className={`px-5 py-3 rounded-full text-sm font-semibold transition-all duration-200 ${
                              selectedSize === sizeOption.size
-                               ? 'bg-gold text-chocolate border border-gold shadow-lg'
-                               : 'bg-cream/10 border border-gold/30 text-cream hover:border-gold hover:bg-gold/10'
+                               ? 'bg-gold text-chocolate border border-gold shadow-lg hover:shadow-[0_0_15px_rgba(218,165,32,0.7)]'
+                               : 'bg-cream/10 border border-gold/30 text-cream hover:border-gold hover:bg-gold/10 hover:shadow-[0_0_10px_rgba(218,165,32,0.5)]'
                            }`}
                          >
                            {sizeOption.size.charAt(0).toUpperCase() + sizeOption.size.slice(1)}
@@ -261,7 +261,7 @@ export function ProductCards({ onAddToCart }: ProductCardsProps) {
                        className={`w-full py-4 rounded-full font-bold text-lg shadow-lg transition-all duration-300 relative overflow-hidden ${
                          addedProducts[productId]
                            ? 'bg-green-500 hover:bg-green-600 text-white scale-105'
-                           : 'bg-gold hover:bg-gold-deep text-chocolate hover:scale-105 hover:shadow-xl'
+                           : 'bg-gold text-chocolate hover:scale-105 hover:shadow-[0_0_20px_rgba(218,165,32,0.8)]'
                        }`}
                      >
                        {addedProducts[productId] ? (

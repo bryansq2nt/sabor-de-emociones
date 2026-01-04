@@ -250,7 +250,7 @@ export function OrderForm({
           <button
             type="submit"
             disabled={items.length === 0 || isSubmitting}
-            className="w-full bg-gold hover:bg-gold-deep text-chocolate py-5 rounded-full font-bold text-lg transition-all duration-300 hover:scale-105 shadow-xl hover:shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-gold text-chocolate py-5 rounded-full font-bold text-lg transition-all duration-300 hover:scale-105 shadow-xl hover:shadow-[0_0_25px_rgba(218,165,32,0.9)] disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isSubmitting ? 'Procesando...' : 'Finalizar pedido'}
           </button>
