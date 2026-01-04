@@ -14,6 +14,7 @@ export function ProductCards({ onAddToCart }: ProductCardsProps) {
   const [quantities, setQuantities] = useState<Record<string, number>>({});
   const [notes, setNotes] = useState<Record<string, string>>({});
   const [currentImageIndex, setCurrentImageIndex] = useState<Record<string, number>>({});
+  const [addedProducts, setAddedProducts] = useState<Record<string, boolean>>({});
 
   const handleAddProduct = (product: Product) => {
     const productId = product.id;
@@ -35,6 +36,16 @@ export function ProductCards({ onAddToCart }: ProductCardsProps) {
     };
 
     onAddToCart(item);
+    
+    // Show feedback
+    setAddedProducts({ ...addedProducts, [productId]: true });
+    setTimeout(() => {
+      setAddedProducts((prev) => {
+        const updated = { ...prev };
+        delete updated[productId];
+        return updated;
+      });
+    }, 3000);
     
     // Reset form for this product
     setQuantities({ ...quantities, [productId]: 1 });
@@ -84,6 +95,9 @@ export function ProductCards({ onAddToCart }: ProductCardsProps) {
              <div
                key={product.id}
                className="bg-cream/5 backdrop-blur-sm rounded-[2.5rem] border border-gold/20 shadow-lg hover:shadow-xl transition-all duration-300 flex flex-col lg:flex-row overflow-hidden"
+               style={{
+                 animation: addedProducts[productId] ? 'zoomInOut 0.6s ease-in-out' : undefined,
+               }}
              >
                {/* Columna Izquierda - Imagen, Nombre, Descripción (Mobile: arriba, Desktop: izquierda) */}
                <div className="lg:w-1/2 flex flex-col order-1 lg:order-1">
@@ -233,7 +247,7 @@ export function ProductCards({ onAddToCart }: ProductCardsProps) {
                  <div className="flex-grow"></div>
 
                  {/* Precio y Botón - Siempre al fondo */}
-                 <div className="space-y-4 pt-4 border-t border-gold/20">
+                 <div className="space-y-4 pt-4 border-t border-gold/20 relative">
                    <div className="flex items-center justify-between">
                      <span className="text-sm font-medium text-cream/70">Precio:</span>
                      <span className="text-3xl font-display font-bold text-gold">
@@ -241,12 +255,27 @@ export function ProductCards({ onAddToCart }: ProductCardsProps) {
                      </span>
                    </div>
 
-                   <button
-                     onClick={() => handleAddProduct(product)}
-                     className="w-full bg-gold hover:bg-gold-deep text-chocolate py-4 rounded-full font-bold text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
-                   >
-                     Agregar al Pedido
-                   </button>
+                   <div className="relative">
+                     <button
+                       onClick={() => handleAddProduct(product)}
+                       className={`w-full py-4 rounded-full font-bold text-lg shadow-lg transition-all duration-300 relative overflow-hidden ${
+                         addedProducts[productId]
+                           ? 'bg-green-500 hover:bg-green-600 text-white scale-105'
+                           : 'bg-gold hover:bg-gold-deep text-chocolate hover:scale-105 hover:shadow-xl'
+                       }`}
+                     >
+                       {addedProducts[productId] ? (
+                         <span className="flex items-center justify-center gap-2">
+                           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                           </svg>
+                           ¡Agregado!
+                         </span>
+                       ) : (
+                         'Agregar al Pedido'
+                       )}
+                     </button>
+                   </div>
                  </div>
                </div>
              </div>
