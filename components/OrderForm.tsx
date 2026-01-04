@@ -84,7 +84,7 @@ export function OrderForm({
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
-          Volver a productos
+          Editar pedido
         </button>
       )}
 
@@ -246,15 +246,27 @@ export function OrderForm({
       </div>
 
       <div className="pt-6 border-t border-gold/30">
-        <div className="flex flex-col sm:flex-row gap-4">
-         
+        <div className="flex flex-col gap-4">
           <button
             type="submit"
             disabled={items.length === 0 || isSubmitting}
-            className="flex-1 bg-gold hover:bg-gold-deep text-chocolate py-5 rounded-full font-bold text-lg transition-all duration-300 hover:scale-105 shadow-xl hover:shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-gold hover:bg-gold-deep text-chocolate py-5 rounded-full font-bold text-lg transition-all duration-300 hover:scale-105 shadow-xl hover:shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {isSubmitting ? 'Procesando...' : 'Pagar'}
+            {isSubmitting ? 'Procesando...' : 'Finalizar pedido'}
           </button>
+          
+          {onBack && (
+            <button
+              type="button"
+              onClick={onBack}
+              className="w-full border-2 border-rose-400/60 hover:border-rose-400 text-rose-300 hover:text-rose-200 bg-transparent py-5 rounded-full font-bold text-lg transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+              Editar pedido
+            </button>
+          )}
         </div>
       </div>
     </form>
