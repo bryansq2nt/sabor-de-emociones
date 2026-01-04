@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-expect-error - nodemailer types compatibility issue with Next.js
 import nodemailer from 'nodemailer';
 import { Order, formatOrderForEmailText, formatOrderForEmailHtml } from '@/lib/order';
 import { checkRateLimit, getClientIP } from '@/lib/rateLimit';

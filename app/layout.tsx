@@ -15,21 +15,21 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: 'Sabor de Emociones - Postres Artesanales en Sanford | Tres Leches',
-  description: 'Postres artesanales hechos con amor en Sanford. Tres Leches, flan y muffins frescos. Ordena en línea y disfruta del sabor de las emociones.',
-  keywords: 'postres en Sanford, tres leches en Sanford, repostería artesanal en Sanford, postres artesanales, dulces caseros Sanford',
+  title: 'Sabor de Emociones - Postres Caseros en Sanford | Tres Leches',
+  description: 'Postres Caseros en Sanford. Tres Leches, flan y muffins frescos. Ordena en línea y disfruta del sabor de las emociones.',
+  keywords: 'postres en Sanford, tres leches en Sanford, flan cacero en Sanford, postres artesanales, dulces caseros Sanford',
   authors: [{ name: 'Ivis Ruiz' }],
   openGraph: {
-    title: 'Sabor de Emociones - Postres Artesanales en Sanford',
-    description: 'Postres artesanales hechos con amor. Tres Leches, flan y muffins frescos.',
+    title: 'Sabor de Emociones - Postres Caseros en Sanford',
+    description: 'Postres caseros hechos con amor. Tres Leches, flan y muffins frescos.',
     type: 'website',
     locale: 'es_US',
     siteName: 'Sabor de Emociones',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Sabor de Emociones - Postres Artesanales en Sanford',
-    description: 'Postres artesanales hechos con amor. Tres Leches, flan y muffins frescos.',
+    title: 'Sabor de Emociones - Postres Caseros en Sanford',
+    description: 'Postres caseros hechos con amor. Tres Leches, flan y muffins frescos.',
   },
   robots: {
     index: true,
@@ -39,6 +39,13 @@ export const metadata: Metadata = {
     width: 'device-width',
     initialScale: 1,
     maximumScale: 5,
+  },
+  icons: {
+    icon: [
+      { url: '/favicon.jpeg', type: 'image/jpeg' },
+    ],
+    shortcut: '/favicon.jpeg',
+    apple: '/favicon.jpeg',
   },
 };
 
