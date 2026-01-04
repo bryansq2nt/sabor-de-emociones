@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, RefObject } from 'react';
 import { OrderItem, Order } from '@/lib/order';
 import { getWhatsAppUrl } from '@/lib/whatsapp';
 
@@ -11,6 +11,8 @@ interface OrderFormProps {
   isSubmitting: boolean;
   submitStatus: 'idle' | 'success' | 'error';
   errorMessage: string;
+  firstInputRef?: RefObject<HTMLInputElement>;
+  onBack?: () => void;
 }
 
 export function OrderForm({
@@ -20,6 +22,8 @@ export function OrderForm({
   isSubmitting,
   submitStatus,
   errorMessage,
+  firstInputRef,
+  onBack,
 }: OrderFormProps) {
   const [formData, setFormData] = useState({
     name: '',
@@ -71,6 +75,19 @@ export function OrderForm({
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
+      {onBack && (
+        <button
+          type="button"
+          onClick={onBack}
+          className="mb-6 text-cream/80 hover:text-cream flex items-center gap-2 transition-colors"
+        >
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          </svg>
+          Volver a productos
+        </button>
+      )}
+
       {submitStatus === 'success' && (
         <div className="p-4 bg-green-900/40 border-2 border-green-400/30 rounded-[2.5rem] text-green-200 text-center backdrop-blur-sm">
           <p className="font-semibold">¡Pedido enviado correctamente! ✅</p>
@@ -91,6 +108,7 @@ export function OrderForm({
             Nombre *
           </label>
           <input
+            ref={firstInputRef}
             type="text"
             id="name"
             required

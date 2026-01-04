@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import { ConfettiRain } from '@/components/ConfettiRain';
 import { PastelSection } from '@/components/PastelSection';
@@ -18,6 +18,25 @@ export default function HomePage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
+  const [showCheckout, setShowCheckout] = useState(false);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const flipContainerRef = useRef<HTMLDivElement>(null);
+  const firstInputRef = useRef<HTMLInputElement>(null);
+
+  // Check for prefers-reduced-motion on mount
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+      setPrefersReducedMotion(mediaQuery.matches);
+      
+      const handleChange = (e: MediaQueryListEvent) => {
+        setPrefersReducedMotion(e.matches);
+      };
+      
+      mediaQuery.addEventListener('change', handleChange);
+      return () => mediaQuery.removeEventListener('change', handleChange);
+    }
+  }, []);
 
   const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
@@ -63,6 +82,28 @@ export default function HomePage() {
     }
   };
 
+  const handleCheckoutClick = () => {
+    setShowCheckout(true);
+    // Scroll to container after state update
+    requestAnimationFrame(() => {
+      flipContainerRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  };
+
+  const handleBackClick = () => {
+    setShowCheckout(false);
+  };
+
+  // Focus first input when entering checkout
+  useEffect(() => {
+    if (showCheckout && firstInputRef.current) {
+      requestAnimationFrame(() => {
+        firstInputRef.current?.focus();
+      });
+    }
+  }, [showCheckout]);
+
+
   return (
     <main className="min-h-screen relative overflow-x-hidden">
       <ConfettiRain />
@@ -101,70 +142,132 @@ export default function HomePage() {
         </div>
       </PastelSection>
 
-      {/* PRODUCTOS */}
+      {/* PRODUCTOS + ORDENAR - Flip Card Container */}
       <PastelSection variant="both" bgColor="#4F355F" className="py-16 md:py-24" id="productos">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="font-display text-4xl md:text-5xl text-cream mb-4">
-              Nuestros Postres
-            </h2>
-            <p className="text-cream/80 text-lg max-w-2xl mx-auto">
-              Cada postre está hecho con ingredientes frescos y mucho cariño
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-            <div className="lg:col-span-3">
-              <ProductCards onAddToCart={handleAddToCart} />
-            </div>
-            <div className="lg:col-span-1">
-              <div className="hidden lg:block">
-                <OrderSummary
-                  items={cartItems}
-                  total={total}
-                  onRemove={handleRemoveFromCart}
-                  onUpdateQuantity={handleUpdateQuantity}
-                  isSticky={true}
-                />
+          {/* Flip Card Wrapper */}
+          <div 
+            ref={flipContainerRef}
+            className="relative overflow-hidden"
+            style={{ 
+              perspective: '2000px',
+              minHeight: '600px',
+            }}
+          >
+            {/* Inner container with 3D transform */}
+            <div
+              className="relative w-full preserve-3d"
+              style={{
+                transformStyle: 'preserve-3d',
+                transform: showCheckout ? 'rotateY(180deg)' : 'rotateY(0deg)',
+                transition: prefersReducedMotion ? 'none' : 'transform 400ms ease-in-out',
+                willChange: 'transform',
+              }}
+            >
+              {/* FRONT FACE - Productos */}
+              <div 
+                className="w-full backface-hidden"
+                style={{
+                  backfaceVisibility: 'hidden',
+                  WebkitBackfaceVisibility: 'hidden',
+                  backgroundColor: '#4F355F',
+                  transform: 'rotateY(0deg)',
+                  position: showCheckout ? 'absolute' : 'relative',
+                  top: showCheckout ? 0 : 'auto',
+                  left: showCheckout ? 0 : 'auto',
+                  right: showCheckout ? 0 : 'auto',
+                  bottom: showCheckout ? 0 : 'auto',
+                }}
+              >
+                <div className="text-center mb-12">
+                  <h2 className="font-display text-4xl md:text-5xl text-cream mb-4">
+                    Nuestros Postres
+                  </h2>
+                  <p className="text-cream/80 text-lg max-w-2xl mx-auto">
+                    Cada postre está hecho con ingredientes frescos y mucho cariño
+                  </p>
+                </div>
+                
+                <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+                  <div className="lg:col-span-3">
+                    <ProductCards onAddToCart={handleAddToCart} />
+                  </div>
+                  <div className="lg:col-span-1">
+                    <div className="hidden lg:block">
+                      <OrderSummary
+                        items={cartItems}
+                        total={total}
+                        onRemove={handleRemoveFromCart}
+                        onUpdateQuantity={handleUpdateQuantity}
+                        isSticky={true}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Mobile Order Summary */}
+                {cartItems.length > 0 && (
+                  <div className="lg:hidden mt-8">
+                    <OrderSummary
+                      items={cartItems}
+                      total={total}
+                      onRemove={handleRemoveFromCart}
+                      onUpdateQuantity={handleUpdateQuantity}
+                    />
+                  </div>
+                )}
+
+                {/* CTA Button - Ordenar en línea */}
+                {total > 0 && (
+                  <div className="mt-12 text-center">
+                    <button
+                      onClick={handleCheckoutClick}
+                      className="bg-gold hover:bg-gold-deep text-chocolate px-12 py-5 rounded-full font-bold text-xl transition-all hover:scale-105 shadow-xl hover:shadow-2xl"
+                    >
+                      Ordenar en línea
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              {/* BACK FACE - Formulario */}
+              <div
+                className="w-full backface-hidden"
+                style={{
+                  transform: 'rotateY(180deg)',
+                  backfaceVisibility: 'hidden',
+                  WebkitBackfaceVisibility: 'hidden',
+                  backgroundColor: '#4F355F',
+                  position: showCheckout ? 'relative' : 'absolute',
+                  top: showCheckout ? 'auto' : 0,
+                  left: showCheckout ? 'auto' : 0,
+                  right: showCheckout ? 'auto' : 0,
+                  bottom: showCheckout ? 'auto' : 0,
+                }}
+              >
+                <div className="text-center mb-12">
+                  <h2 className="font-display text-4xl md:text-5xl text-cream mb-4">
+                    Completa tu Pedido
+                  </h2>
+                  <p className="text-cream/80 text-lg max-w-2xl mx-auto">
+                    Cuéntanos cómo te gustaría recibir tus postres
+                  </p>
+                </div>
+
+                <div className="bg-cream/5 backdrop-blur-sm rounded-[3rem] p-8 md:p-12 border-2 border-gold/20">
+                  <OrderForm
+                    items={cartItems}
+                    total={total}
+                    onSubmitEmail={handleSubmitEmail}
+                    isSubmitting={isSubmitting}
+                    submitStatus={submitStatus}
+                    errorMessage={errorMessage}
+                    firstInputRef={firstInputRef}
+                    onBack={handleBackClick}
+                  />
+                </div>
               </div>
             </div>
-          </div>
-
-          {/* Mobile Order Summary */}
-          {cartItems.length > 0 && (
-            <div className="lg:hidden mt-8">
-              <OrderSummary
-                items={cartItems}
-                total={total}
-                onRemove={handleRemoveFromCart}
-                onUpdateQuantity={handleUpdateQuantity}
-              />
-            </div>
-          )}
-        </div>
-      </PastelSection>
-
-      {/* ORDENAR */}
-      <PastelSection variant="both" bgColor="#292524" className="py-16 md:py-24" id="ordenar">
-        <div className="max-w-4xl mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="font-display text-4xl md:text-5xl text-cream mb-4">
-              Completa tu Pedido
-            </h2>
-            <p className="text-cream/80 text-lg max-w-2xl mx-auto">
-              Cuéntanos cómo te gustaría recibir tus postres
-            </p>
-          </div>
-
-          <div className="bg-cream/5 backdrop-blur-sm rounded-[3rem] p-8 md:p-12 border-2 border-gold/20">
-            <OrderForm
-              items={cartItems}
-              total={total}
-              onSubmitEmail={handleSubmitEmail}
-              isSubmitting={isSubmitting}
-              submitStatus={submitStatus}
-              errorMessage={errorMessage}
-            />
           </div>
         </div>
       </PastelSection>
