@@ -233,7 +233,7 @@ export default function HomePage() {
                       onClick={handleCheckoutClick}
                       className="bg-gold text-chocolate px-12 py-5 rounded-full font-bold text-xl transition-all hover:scale-105 shadow-xl hover:shadow-[0_0_25px_rgba(218,165,32,0.9)]"
                     >
-                      Ordenar en línea
+                      Completar Pedido
                     </button>
                   </div>
                 )}

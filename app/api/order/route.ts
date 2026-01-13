@@ -134,6 +134,7 @@ export async function POST(request: NextRequest) {
     const emailUser = process.env.EMAIL_USER;
     const emailPass = process.env.EMAIL_PASS;
     const emailTo = process.env.EMAIL_TO;
+    const emailToCc = process.env.EMAIL_TO_CC;
 
     if (!emailHost || !emailPort || !emailUser || !emailPass || !emailTo) {
       console.error('Missing email configuration');
@@ -163,6 +164,7 @@ export async function POST(request: NextRequest) {
     await transporter.sendMail({
       from: `"Sabor de Emociones" <${emailUser}>`,
       to: emailTo,
+      cc: emailToCc || undefined,
       replyTo: order.email || emailUser,
       subject: `Nuevo Pedido de ${order.name} - $${order.total.toFixed(2)}`,
       text: emailText,
